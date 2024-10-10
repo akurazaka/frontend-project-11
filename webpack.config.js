@@ -17,7 +17,7 @@ export default {
   },
   plugins: [
     new HtmlWebpackPlugin({
-      template: 'index.html',
+      template: './index.html',
     }),
 
   ],
@@ -34,21 +34,13 @@ export default {
           },
         },
         {
-          test: /.scss$/,
-          use: [
-            "style-loader",
-            "css-loader",
-            "postcss-loader",
-            {
-              loader: "sass-loader",
-              options: {
-                sassOptions: {
-                  quietDeps: true,
-                },
-              },
-            },
-          ],
-        },
+            test: /\.css$/i,
+            use: ['style-loader', 'css-loader'],
+          },
+          {
+            test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
+            use: ['file-loader'],
+          },
         {
           test: /.(woff2?|ttf|eot|svg)(\?[\s\S]+)?$/,
           use: "file-loader",
