@@ -23,27 +23,41 @@ export default {
   ],
   module: {
     rules: [
+        // {
+        //   test: /\.js$/,
+        //   exclude: /node_modules/,
+        //   use: {
+        //     loader: 'babel-loader',
+        //     options: {
+        //       presets: ['@babel/preset-env'],
+        //     },
+        //   },
+        // },
+        { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
         {
-          test: /.js$/,
-          exclude: /node_modules/,
-          use: {
-            loader: "babel-loader",
-            options: {
-              presets: ["@babel/preset-env"],
+          test: /\.scss$/,
+          use: [
+            'style-loader',
+            'css-loader',
+            'sass-loader',
+            'postcss-loader',
+            {
+              loader: 'sass-loader',
+              options: {
+                sassOptions: {
+                  quietDeps: true,
+                },
+              },
             },
-          },
+          ],
         },
         {
-            test: /\.css$/i,
-            use: ['style-loader', 'css-loader'],
-          },
-          {
-            test: /\.(woff|woff2|eot|ttf|otf|svg)$/,
-            use: ['file-loader'],
-          },
+          test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
+          use: 'url-loader?limit=10000',
+        },
         {
-          test: /.(woff2?|ttf|eot|svg)(\?[\s\S]+)?$/,
-          use: "file-loader",
+          test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
+          use: 'file-loader',
         },
       ],
   },
