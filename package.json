@@ -2,6 +2,7 @@
   "name": "my-webpack-project",
   "version": "1.0.0",
   "description": "RSS agregator",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "npx jest",

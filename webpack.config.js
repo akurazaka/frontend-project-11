@@ -23,32 +23,36 @@ export default {
   ],
   module: {
     rules: [
-      { test: /\.css$/, use: ['style-loader', 'css-loader', 'postcss-loader'] },
-      {
-        test: /\.scss$/,
-        use: [
-          'style-loader',
-          'css-loader',
-          'sass-loader',
-          'postcss-loader',
-          {
-            loader: 'sass-loader',
+        {
+          test: /.js$/,
+          exclude: /node_modules/,
+          use: {
+            loader: "babel-loader",
             options: {
-              sassOptions: {
-                quietDeps: true,
-              },
+              presets: ["@babel/preset-env"],
             },
           },
-        ],
-      },
-      {
-        test: /\.woff2?(\?v=[0-9]\.[0-9]\.[0-9])?$/,
-        use: 'url-loader?limit=10000',
-      },
-      {
-        test: /\.(ttf|eot|svg)(\?[\s\S]+)?$/,
-        use: 'file-loader',
-      },
-    ],
+        },
+        {
+          test: /.scss$/,
+          use: [
+            "style-loader",
+            "css-loader",
+            "postcss-loader",
+            {
+              loader: "sass-loader",
+              options: {
+                sassOptions: {
+                  quietDeps: true,
+                },
+              },
+            },
+          ],
+        },
+        {
+          test: /.(woff2?|ttf|eot|svg)(\?[\s\S]+)?$/,
+          use: "file-loader",
+        },
+      ],
   },
 };
