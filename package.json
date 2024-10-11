@@ -2,7 +2,7 @@
   "name": "my-webpack-project",
   "version": "1.0.0",
   "description": "RSS agregator",
-  "main": "eslint.config.js",
+  "main": "src/index.js",
   "type": "module",
   "scripts": {
     "test": "npx jest",
@@ -17,7 +17,10 @@
   "dependencies": {
     "commander": "^12.1.0",
     "lodash": "^4.17.21",
-    "postcss-loader": "^8.1.1"
+    "postcss-loader": "^8.1.1",
+    "yup": "^0.32.11",
+    "on-change": "^2.2.1",
+    "i18next": "^21.6.6"
   },
   "devDependencies": {
     "@babel/core": "^7.25.7",
