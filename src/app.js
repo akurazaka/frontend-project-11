@@ -6,6 +6,18 @@ import resources from './locales/index.js';
 import parser from './toParse.js';
 import proxyAPI from './proxyAPI.js';
 
+const validateURL = (url, feeds) => {
+  const feedUrls = feeds.map((feed) => feed.url);
+  const schema = yup.string()
+    .url('errors.notValid')
+    .required('errors.emptyField')
+    .notOneOf(feedUrls, 'errors.hasAlready');
+
+  return schema.validate(url)
+    .then(() => {})
+    .catch((error) => error.message);
+};
+
 const appState = {
   form: {
     status: 'no data',
@@ -21,18 +33,6 @@ const appState = {
     readPostsId: new Set(),
     viewedId: null,
   },
-};
-
-const validateURL = (url, feeds) => {
-  const feedUrls = feeds.map((feed) => feed.url);
-  const schema = yup.string()
-    .url('errors.notValid')
-    .required('errors.emptyField')
-    .notOneOf(feedUrls, 'errors.hasAlready');
-
-  return schema.validate(url)
-    .then(() => {})
-    .catch((error) => error.message);
 };
 
 const fetchContent = (url, watchedState) => {
