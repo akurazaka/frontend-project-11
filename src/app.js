@@ -38,8 +38,7 @@ const appState = {
 const fetchContent = (url, watchedState) => {
   const isFeedExists = watchedState.feeds.some((feed) => feed.url === url);
   if (isFeedExists) {
-    const updatedForm = { ...watchedState.form, error: 'errors.hasAlready', status: 'failed' };
-    watchedState.form = updatedForm;
+    watchedState.form = { ...watchedState.form, error: 'errors.hasAlready', status: 'failed' };
     return;
   }
 
@@ -48,6 +47,7 @@ const fetchContent = (url, watchedState) => {
       const { feed, posts } = parser(data);
       const feedId = nanoid();
       const enrichedPosts = posts.map((post) => ({ id: nanoid(), feedId, ...post }));
+      
       watchedState.feeds = [{ id: feedId, url, ...feed }, ...watchedState.feeds];
       watchedState.posts = [...enrichedPosts, ...watchedState.posts];
       watchedState.loadingProcess = { ...watchedState.loadingProcess, status: 'success' };
@@ -72,7 +72,7 @@ const monitorNewContent = (watchedState) => {
 
       if (uniqueNewPosts.length > 0) {
         const newPostsWithId = uniqueNewPosts.map((post) => ({ id: nanoid(), feedId, ...post }));
-        watchedState.posts.unshift(...newPostsWithId);
+        watchedState.posts = [...newPostsWithId, ...watchedState.posts];
       }
     })
     .catch((error) => console.error(error)));
@@ -112,12 +112,10 @@ export default () => {
 
         validateURL(url, feeds).then((error) => {
           if (error) {
-            watchedState.form.error = error;
-            watchedState.form.status = 'failed';
+            watchedState.form = { ...watchedState.form, error, status: 'failed' };
           } else {
-            watchedState.form.error = '';
-            watchedState.form.status = 'loading';
-            watchedState.loadingProcess.status = '';
+            watchedState.form = { ...watchedState.form, error: '', status: 'loading' };
+            watchedState.loadingProcess = { ...watchedState.loadingProcess, status: '' };
             fetchContent(url, watchedState);
           }
         });
@@ -126,11 +124,15 @@ export default () => {
       elements.postsContainer.addEventListener('click', (event) => {
         const { id } = event.target.dataset;
         if (id) {
-          watchedState.modal.readPostsId.add(id);
-          watchedState.modal.viewedId = id;
+          watchedState.modal = {
+            ...watchedState.modal,
+            readPostsId: new Set([...watchedState.modal.readPostsId, id]),
+            viewedId: id,
+          };
         }
       });
 
       monitorNewContent(watchedState);
     });
 };
+
