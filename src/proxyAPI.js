@@ -13,14 +13,14 @@ const createProxiedUrl = (originalUrl) => {
 export default (originalUrl) => {
   return axios
     .get(createProxiedUrl(originalUrl))
-    .then((response) => {
-      if (response.status >= 200 && response.status < 400) {
-        return response.data.contents;
-      }
-      throw new Error('errors.unknown');
-    })
+    .then((response) => (
+      response.status >= 200 && response.status < 400
+        ? response.data.contents
+        : Promise.reject(new Error('errors.unknown'))
+    ))
     .catch((error) => {
-      error.message = 'errors.network';
-      throw error;
+      const networkError = new Error('errors.network');
+      networkError.stack = error.stack;
+      throw networkError;
     });
 };
