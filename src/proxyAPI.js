@@ -23,6 +23,6 @@ function proxyAPI(originalUrl) {
       networkError.stack = error.stack;
       throw networkError;
     });
-};
+}
 
 export default proxyAPI;
