@@ -10,7 +10,7 @@ const createProxiedUrl = (originalUrl) => {
   return `${proxyBaseUrl}?${urlParams.toString()}`;
 };
 
-const proxyAPI = (originalUrl) => {
+export default (originalUrl) => {
   return axios
     .get(createProxiedUrl(originalUrl))
     .then((response) => (
@@ -24,5 +24,3 @@ const proxyAPI = (originalUrl) => {
       throw networkError;
     });
 };
-
-export default proxyAPI;
