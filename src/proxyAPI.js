@@ -10,7 +10,7 @@ const createProxiedUrl = (originalUrl) => {
   return `${proxyBaseUrl}?${urlParams.toString()}`;
 };
 
-function proxyAPI(originalUrl) {
+const proxyAPI = (originalUrl) => {
   return axios
     .get(createProxiedUrl(originalUrl))
     .then((response) => (
