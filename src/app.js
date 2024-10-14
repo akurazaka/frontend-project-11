@@ -37,9 +37,10 @@ const appState = {
 
 const fetchContent = (url, watchedState) => {
   const isFeedExists = watchedState.feeds.some((feed) => feed.url === url);
+  
   if (isFeedExists) {
-    watchedState.form.error = 'errors.hasAlready';
-    watchedState.form.status = 'failed';
+    const updatedForm = { ...watchedState.form, error: 'errors.hasAlready', status: 'failed' };
+    watchedState.form = updatedForm;
     return;
   }
 
@@ -48,16 +49,28 @@ const fetchContent = (url, watchedState) => {
       const { feed, posts } = parser(data);
       const feedId = nanoid();
       const enrichedPosts = posts.map((post) => ({ id: nanoid(), feedId, ...post }));
-      watchedState.feeds.unshift({ id: feedId, url, ...feed });
-      watchedState.posts.unshift(...enrichedPosts);
-      watchedState.loadingProcess.status = 'success';
+      
+      const updatedFeeds = [{ id: feedId, url, ...feed }, ...watchedState.feeds];
+      const updatedPosts = [...enrichedPosts, ...watchedState.posts];
+      
+      watchedState.feeds = updatedFeeds;
+      watchedState.posts = updatedPosts;
+      
+      const updatedLoadingProcess = { ...watchedState.loadingProcess, status: 'success' };
+      watchedState.loadingProcess = updatedLoadingProcess;
     })
     .catch((error) => {
-      watchedState.loadingProcess.error = error.message;
+      const updatedLoadingProcess = { 
+        ...watchedState.loadingProcess, 
+        error: error.message, 
+        status: 'failed' 
+      };
+      watchedState.loadingProcess = updatedLoadingProcess;
+      
       console.error(error);
-      watchedState.loadingProcess.status = 'failed';
     });
 };
+
 
 const monitorNewContent = (watchedState) => {
   const { feeds, posts } = watchedState;
