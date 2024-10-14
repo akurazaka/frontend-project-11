@@ -20,7 +20,9 @@ const updateValidationUI = (state, elements, status, i18nextInstance) => {
 };
 
 const updateLoadingUI = (state, elements, status, i18nextInstance) => {
-  const { form, feedback, input, button } = elements;
+  const { 
+    form, feedback, input, button 
+  } = elements;
   const { loadingProcess } = state;
 
   if (status === 'failed') {
