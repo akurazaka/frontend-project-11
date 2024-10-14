@@ -104,7 +104,7 @@ export default () => {
     })
     .then(() => {
       const watchedState = watcher(appState, elements, i18nextInstance);
-      
+
       elements.form.addEventListener('submit', (event) => {
         event.preventDefault();
         const formData = new FormData(event.target);

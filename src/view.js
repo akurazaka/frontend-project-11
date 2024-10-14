@@ -144,7 +144,7 @@ const renderModal = (state, elements) => {
   const modalReadButton = modalWindow.querySelector('[role="button"]');
 
   const postToView = posts.find((post) => post.id === modal.viewedId);
-  
+
   if (postToView) {
     modalTitle.textContent = postToView.postTitle;
     modalDescription.textContent = postToView.postDescription;

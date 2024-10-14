@@ -14,7 +14,7 @@ export default (rssData) => {
   const feed = { title: channelTitle, description: channelDescription };
 
   const itemElements = parsedDocument.querySelectorAll('item');
-  
+
   const posts = Array.from(itemElements).map((item) => {
     const postTitle = item.querySelector('title').textContent;
     const postDescription = item.querySelector('description').textContent;
