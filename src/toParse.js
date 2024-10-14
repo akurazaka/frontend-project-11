@@ -4,7 +4,7 @@ export default (rssData) => {
   const parserError = parsedDocument.querySelector('parsererror');
 
   if (parserError) {
-    const error = new Error('errors.invalidRss');
+    const error = new Error('errors.withoutRss');
     error.details = parserError.textContent;
     throw error;
   }

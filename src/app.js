@@ -61,7 +61,7 @@ const fetchContent = (url, watchedState) => {
 
 const monitorNewContent = (watchedState) => {
   const { feeds, posts } = watchedState;
-  const checkInterval = 1000;
+  const checkInterval = 5000;
 
   const promises = feeds.map((feed) => proxyAPI(feed.url)
     .then((data) => {
