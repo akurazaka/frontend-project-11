@@ -38,7 +38,8 @@ const appState = {
 const fetchContent = (url, watchedState) => {
   const isFeedExists = watchedState.feeds.some((feed) => feed.url === url);
   if (isFeedExists) {
-    watchedState.form = { ...watchedState.form, error: 'errors.hasAlready', status: 'failed' };
+    watchedState.form.error = 'errors.hasAlready';
+    watchedState.form.status = 'failed';
     return;
   }
 
@@ -47,14 +48,14 @@ const fetchContent = (url, watchedState) => {
       const { feed, posts } = parser(data);
       const feedId = nanoid();
       const enrichedPosts = posts.map((post) => ({ id: nanoid(), feedId, ...post }));
-      
-      watchedState.feeds = [{ id: feedId, url, ...feed }, ...watchedState.feeds];
-      watchedState.posts = [...enrichedPosts, ...watchedState.posts];
-      watchedState.loadingProcess = { ...watchedState.loadingProcess, status: 'success' };
+      watchedState.feeds.unshift({ id: feedId, url, ...feed });
+      watchedState.posts.unshift(...enrichedPosts);
+      watchedState.loadingProcess.status = 'success';
     })
     .catch((error) => {
-      watchedState.loadingProcess = { ...watchedState.loadingProcess, error: error.message, status: 'failed' };
+      watchedState.loadingProcess.error = error.message;
       console.error(error);
+      watchedState.loadingProcess.status = 'failed';
     });
 };
 
@@ -72,7 +73,7 @@ const monitorNewContent = (watchedState) => {
 
       if (uniqueNewPosts.length > 0) {
         const newPostsWithId = uniqueNewPosts.map((post) => ({ id: nanoid(), feedId, ...post }));
-        watchedState.posts = [...newPostsWithId, ...watchedState.posts];
+        watchedState.posts.unshift(...newPostsWithId);
       }
     })
     .catch((error) => console.error(error)));
@@ -112,10 +113,12 @@ export default () => {
 
         validateURL(url, feeds).then((error) => {
           if (error) {
-            watchedState.form = { ...watchedState.form, error, status: 'failed' };
+            watchedState.form.error = error;
+            watchedState.form.status = 'failed';
           } else {
-            watchedState.form = { ...watchedState.form, error: '', status: 'loading' };
-            watchedState.loadingProcess = { ...watchedState.loadingProcess, status: '' };
+            watchedState.form.error = '';
+            watchedState.form.status = 'loading';
+            watchedState.loadingProcess.status = '';
             fetchContent(url, watchedState);
           }
         });
@@ -124,15 +127,11 @@ export default () => {
       elements.postsContainer.addEventListener('click', (event) => {
         const { id } = event.target.dataset;
         if (id) {
-          watchedState.modal = {
-            ...watchedState.modal,
-            readPostsId: new Set([...watchedState.modal.readPostsId, id]),
-            viewedId: id,
-          };
+          watchedState.modal.readPostsId.add(id);
+          watchedState.modal.viewedId = id;
         }
       });
 
       monitorNewContent(watchedState);
     });
 };
-
