@@ -44,19 +44,18 @@ const fetchContent = (url, watchedState) => {
   }
 
   proxyAPI(url)
-    .then((data) => {
-      const { channel, items } = parser(data);
-      const feedId = nanoid();
-      const enrichedPosts = items.map((post) => ({ id: nanoid(), feedId, ...post }));
-      watchedState.channel.unshift({ id: feedId, url, ...channel });
-      watchedState.items.unshift(...enrichedPosts);
-      watchedState.loadingProcess.status = 'success';
-    })
-    .catch((error) => {
-      watchedState.loadingProcess.error = error.message;
-      console.error(error);
-      watchedState.loadingProcess.status = 'failed';
-    });
+  .then((data) => {
+    const { channel, items } = parser(data);
+    const feedId = nanoid();
+    const enrichedPosts = items.map((item) => ({ id: nanoid(), feedId, ...item }));
+    watchedState.feeds.unshift({ id: feedId, url, ...channel });
+    watchedState.posts.unshift(...enrichedPosts);
+    watchedState.loadingProcess.status = 'success';
+  })
+  .catch((error) => {
+    watchedState.loadingProcess.error = error.message;
+    watchedState.loadingProcess.status = 'failed';
+  });
 };
 /* eslint-disable no-param-reassign */
 
