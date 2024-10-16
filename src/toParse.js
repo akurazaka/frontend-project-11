@@ -11,16 +11,16 @@ export default (rssData) => {
 
   const channelTitle = parsedDocument.querySelector('title').textContent;
   const channelDescription = parsedDocument.querySelector('description').textContent;
-  const feed = { title: channelTitle, description: channelDescription };
+  const channel = { title: channelTitle, description: channelDescription };
 
   const itemElements = parsedDocument.querySelectorAll('item');
 
-  const posts = Array.from(itemElements).map((item) => {
-    const postTitle = item.querySelector('title').textContent;
-    const postDescription = item.querySelector('description').textContent;
+  const items = Array.from(itemElements).map((item) => {
+    const title = item.querySelector('title').textContent;
+    const description = item.querySelector('description').textContent;
     const link = item.querySelector('link').textContent;
-    return { postTitle, postDescription, link };
+    return { title, description, link };
   });
 
-  return { feed, posts };
+  return { channel, items };
 };
