@@ -45,11 +45,11 @@ const fetchContent = (url, watchedState) => {
 
   proxyAPI(url)
     .then((data) => {
-      const { feed, posts } = parser(data);
+      const { channel, items } = parser(data);
       const feedId = nanoid();
-      const enrichedPosts = posts.map((post) => ({ id: nanoid(), feedId, ...post }));
-      watchedState.feeds.unshift({ id: feedId, url, ...feed });
-      watchedState.posts.unshift(...enrichedPosts);
+      const enrichedPosts = items.map((post) => ({ id: nanoid(), feedId, ...post }));
+      watchedState.channel.unshift({ id: feedId, url, ...channel });
+      watchedState.items.unshift(...enrichedPosts);
       watchedState.loadingProcess.status = 'success';
     })
     .catch((error) => {
