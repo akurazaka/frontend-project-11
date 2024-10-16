@@ -16,10 +16,10 @@ export default (rssData) => {
   const itemElements = parsedDocument.querySelectorAll('item');
 
   const items = Array.from(itemElements).map((item) => {
-    const title = item.querySelector('title').textContent;
-    const description = item.querySelector('description').textContent;
+    const postTitle = item.querySelector('title').textContent;
+    const postDescription = item.querySelector('description').textContent;
     const link = item.querySelector('link').textContent;
-    return { title, description, link };
+    return { postTitle, postDescription, link };
   });
 
   return { channel, items };
