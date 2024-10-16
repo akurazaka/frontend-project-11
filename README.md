@@ -59,5 +59,5 @@ npm run build
 Для проверки кода на соответствие стандартам используйте ESLint:
 
 ```bash
-npm run lint
+npx eslint .
 ```
