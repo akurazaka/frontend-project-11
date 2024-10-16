@@ -108,22 +108,24 @@ export default () => {
 
       elements.form.addEventListener('submit', (event) => {
         event.preventDefault();
+        
         const formData = new FormData(event.target);
         const url = formData.get('url').trim();
         const { feeds } = appState;
-
-        validateURL(url, feeds).then((error) => {
+        const feedUrls = feeds.map((feed) => feed.url);
+      
+        watchedState.form.error = '';
+        watchedState.form.status = 'loading';
+        
+        validateURL(url, feedUrls).then((error) => {
           if (error) {
             watchedState.form.error = error;
             watchedState.form.status = 'failed';
           } else {
-            watchedState.form.error = '';
-            watchedState.form.status = 'loading';
-            watchedState.loadingProcess.status = '';
             fetchContent(url, watchedState);
           }
         });
-      });
+      });      
 
       elements.postsContainer.addEventListener('click', (event) => {
         const { id } = event.target.dataset;
