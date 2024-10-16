@@ -114,7 +114,7 @@ export default () => {
         const { feeds } = appState;
         const feedUrls = feeds.map((feed) => feed.url);
 
-        watchedState.form.error = '';
+        watchedState.form.error = null;
         watchedState.form.status = 'loading';
 
         validateURL(url, feedUrls).then((error) => {
