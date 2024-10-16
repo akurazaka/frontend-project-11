@@ -79,7 +79,7 @@ const monitorNewContent = (watchedState) => {
     })
     .catch((error) => console.error(error)));
 
-    Promise.all(promises)
+  Promise.all(promises)
     .finally(() => {
       setTimeout(() => monitorNewContent(watchedState), checkInterval);
     });
