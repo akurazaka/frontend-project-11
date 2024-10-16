@@ -34,7 +34,7 @@ const appState = {
   },
 };
 
-
+/* eslint-disable no-param-reassign */
 const fetchContent = (url, watchedState) => {
   const isFeedExists = watchedState.feeds.some((feed) => feed.url === url);
   if (isFeedExists) {
@@ -58,7 +58,7 @@ const fetchContent = (url, watchedState) => {
       watchedState.loadingProcess.status = 'failed';
     });
 };
-
+/* eslint-disable no-param-reassign */
 
 const monitorNewContent = (watchedState) => {
   const { feeds, posts } = watchedState;
