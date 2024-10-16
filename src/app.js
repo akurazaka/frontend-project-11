@@ -6,8 +6,7 @@ import resources from './locales/index.js';
 import parser from './toParse.js';
 import proxyAPI from './proxyAPI.js';
 
-const validateURL = (url, feeds) => {
-  const feedUrls = feeds.map((feed) => feed.url);
+const validateURL = (url, feedUrls) => {
   const schema = yup.string()
     .url('errors.notValid')
     .required('errors.emptyField')
