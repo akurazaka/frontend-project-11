@@ -34,7 +34,7 @@ const appState = {
   },
 };
 
-/* eslint-disable no-param-reassign */
+
 const fetchContent = (url, watchedState) => {
   const isFeedExists = watchedState.feeds.some((feed) => feed.url === url);
   if (isFeedExists) {
@@ -58,7 +58,7 @@ const fetchContent = (url, watchedState) => {
       watchedState.loadingProcess.status = 'failed';
     });
 };
-/* eslint-enable no-param-reassign */
+
 
 const monitorNewContent = (watchedState) => {
   const { feeds, posts } = watchedState;
@@ -108,15 +108,15 @@ export default () => {
 
       elements.form.addEventListener('submit', (event) => {
         event.preventDefault();
-        
+
         const formData = new FormData(event.target);
         const url = formData.get('url').trim();
         const { feeds } = appState;
         const feedUrls = feeds.map((feed) => feed.url);
-      
+
         watchedState.form.error = '';
         watchedState.form.status = 'loading';
-        
+
         validateURL(url, feedUrls).then((error) => {
           if (error) {
             watchedState.form.error = error;
@@ -125,7 +125,7 @@ export default () => {
             fetchContent(url, watchedState);
           }
         });
-      });      
+      });
 
       elements.postsContainer.addEventListener('click', (event) => {
         const { id } = event.target.dataset;
